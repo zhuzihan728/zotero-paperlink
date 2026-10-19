@@ -1,0 +1,32 @@
+name: Release
+
+# Push a tag like v0.5.2 (matching src/manifest.json) to build the .xpi and publish a release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches manifest version
+        run: |
+          version=$(python3 -c "import json; print(json.load(open('src/manifest.json'))['version'])")
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME != manifest v$version"; exit 1; }
+
+      - name: Test matching logic
+        run: node test/match.test.js
+
+      - name: Build
+        run: python3 build.py
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.xpi
+          generate_release_notes: true

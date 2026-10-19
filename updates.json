@@ -1,0 +1,18 @@
+{
+  "addons": {
+    "paperlink@local.research": {
+      "updates": [
+        {
+          "version": "0.5.2",
+          "update_link": "https://github.com/zhuzihan728/zotero-paperlink/releases/download/v0.5.2/paperlink-0.5.2.xpi",
+          "applications": {
+            "zotero": {
+              "strict_min_version": "6.999",
+              "strict_max_version": "10.*"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
